@@ -1,9 +1,16 @@
 import type { NextPage } from "next";
+import { useSession, signIn, signOut } from "next-auth/react";
 import Head from "next/head";
+import { FcGoogle } from "react-icons/fc";
+import { FaDiscord } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
+
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
   const hello = trpc.proxy.example.hello.useQuery({ text: "from tRPC" });
+
+  const { data: session } = useSession();
 
   return (
     <>
@@ -12,7 +19,57 @@ const Home: NextPage = () => {
         <meta name="description" content="Rouge is a workout app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1 className="text-center font-bold">Rouge</h1>
+      <div className="container mx-auto p-4">
+        <div className="flex h-screen">
+          <div className="m-auto">
+            <h1 className="text-center font-bold text-4xl">Rouge</h1>
+            <div className="grid grid-cols-2 gap-4 place-items-center">
+              <div className="text-3xl">
+                Data to enrich your online business Anim aute id magna aliqua ad
+                ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.
+                Elit sunt amet fugiat veniam occaecat fugiat aliqua.
+              </div>
+              <div className="bg-cyan-400 rounded p-4 flex flex-col gap-4">
+                {session ? (
+                  <>
+                    <p className="text-xl text-center font-bold">
+                      Signed in as {session?.user?.email}
+                    </p>
+                    <div className="flex gap-4 justify-center">
+                      <button
+                        onClick={() => signOut()}
+                        className="p-4 border border-black rounded"
+                      >
+                        <FiLogOut className="text-5xl" />
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-xl text-center font-bold">
+                      Sign in with
+                    </p>
+                    <div className="flex gap-4 justify-center">
+                      <button
+                        onClick={() => signIn("google")}
+                        className="p-4 border border-black rounded"
+                      >
+                        <FcGoogle className="text-5xl" />
+                      </button>
+                      <button
+                        onClick={() => signIn("discord")}
+                        className="p-4 border border-black rounded"
+                      >
+                        <FaDiscord className="text-5xl text-slate-100" />
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
