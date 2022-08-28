@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Head from "next/head";
 import { FcGoogle } from "react-icons/fc";
@@ -6,11 +6,14 @@ import { FaDiscord } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 
 import { trpc } from "../utils/trpc";
+import { getRougeAuthSession } from "src/server/common/get-server-session";
 
 const Home: NextPage = () => {
   const hello = trpc.proxy.example.hello.useQuery({ text: "from tRPC" });
 
   const { data: session } = useSession();
+
+  console.log(session)
 
   return (
     <>
@@ -33,7 +36,7 @@ const Home: NextPage = () => {
                 {session ? (
                   <>
                     <p className="text-xl text-center font-bold">
-                      Signed in as {" "}
+                      Signed in as{" "}
                       <span className="text-cyan-50">
                         {session?.user?.name}
                       </span>
@@ -60,13 +63,21 @@ const Home: NextPage = () => {
                     </p>
                     <div className="flex gap-4 justify-center">
                       <button
-                        onClick={() => signIn("google")}
+                        onClick={() =>
+                          signIn("google", {
+                            callbackUrl: "/workout",
+                          })
+                        }
                         className="p-4 border border-black rounded"
                       >
                         <FcGoogle className="text-5xl" />
                       </button>
                       <button
-                        onClick={() => signIn("discord")}
+                        onClick={() =>
+                          signIn("discord", {
+                            callbackUrl: "/workout",
+                          })
+                        }
                         className="p-4 border border-black rounded"
                       >
                         <FaDiscord className="text-5xl text-slate-100" />
@@ -84,3 +95,11 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  return {
+    props: {
+      session: await getRougeAuthSession(ctx),
+    },
+  };
+};
