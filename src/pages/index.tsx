@@ -5,15 +5,21 @@ import { FcGoogle } from "react-icons/fc";
 import { FaDiscord } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 
-import { trpc } from "../utils/trpc";
+import { trpc } from "src/utils/trpc";
 import { getRougeAuthSession } from "src/server/common/get-server-session";
 
 const Home: NextPage = () => {
   const hello = trpc.proxy.example.hello.useQuery({ text: "from tRPC" });
+  const tctx = trpc.useContext();
 
   const { data: session } = useSession();
 
-  console.log(session)
+  if (session) {
+    const { data } = trpc.proxy.user.getUser.useQuery({
+      email: session.user?.email as string,
+    });
+
+  }
 
   return (
     <>
@@ -65,7 +71,7 @@ const Home: NextPage = () => {
                       <button
                         onClick={() =>
                           signIn("google", {
-                            callbackUrl: "/workout",
+                            callbackUrl: `/user`,
                           })
                         }
                         className="p-4 border border-black rounded"
@@ -75,7 +81,7 @@ const Home: NextPage = () => {
                       <button
                         onClick={() =>
                           signIn("discord", {
-                            callbackUrl: "/workout",
+                            callbackUrl: `/user`,
                           })
                         }
                         className="p-4 border border-black rounded"

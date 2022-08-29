@@ -1,8 +1,9 @@
 import { useSession } from "next-auth/react";
 
+import { trpc } from "src/utils/trpc";
+
 const Workout = () => {
   const { data: session } = useSession();
-  console.log(session);
 
   return <div>Workout</div>;
 };
