@@ -1,25 +1,17 @@
 import type { GetServerSidePropsContext, NextPage } from "next";
+import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Head from "next/head";
 import { FcGoogle } from "react-icons/fc";
 import { FaDiscord } from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi";
 
 import { trpc } from "src/utils/trpc";
 import { getRougeAuthSession } from "src/server/common/get-server-session";
 
 const Home: NextPage = () => {
   const hello = trpc.proxy.example.hello.useQuery({ text: "from tRPC" });
-  const tctx = trpc.useContext();
 
   const { data: session } = useSession();
-
-  if (session) {
-    const { data } = trpc.proxy.user.getUser.useQuery({
-      email: session.user?.email as string,
-    });
-
-  }
 
   return (
     <>
@@ -48,12 +40,20 @@ const Home: NextPage = () => {
                       </span>
                     </p>
                     <div className="flex gap-4 justify-center">
-                      <button
-                        onClick={() => signOut()}
-                        className="p-4 border border-black rounded text-cyan-50"
-                      >
-                        Workout
-                      </button>
+                      <Link href="/workout">
+                        <a
+                          className="p-4 border border-black rounded text-cyan-50"
+                        >
+                          Workout
+                        </a>
+                      </Link>
+                      <Link href="/user">
+                        <a
+                          className="p-4 border border-black rounded text-cyan-50"
+                        >
+                          Profile
+                        </a>
+                      </Link>
                       <button
                         onClick={() => signOut()}
                         className="p-4 border border-black rounded text-cyan-50"

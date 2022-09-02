@@ -1,11 +1,11 @@
-import { useSession } from "next-auth/react";
-
-import { trpc } from "src/utils/trpc";
+import Menu from "src/components/menu";
 
 const Workout = () => {
-  const { data: session } = useSession();
-
-  return <div>Workout</div>;
+  return (
+    <Menu>
+      <h1>Workout</h1>
+    </Menu>
+  );
 };
 
 export default Workout;
