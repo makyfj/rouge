@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import type { GetServerSidePropsContext } from "next";
+import { useSession } from "next-auth/react";
 
 import { trpc } from "src/utils/trpc";
 import { getRougeAuthSession } from "src/server/common/get-server-session";
-import { useSession } from "next-auth/react";
 import Menu from "src/components/menu";
 
 const User = () => {
