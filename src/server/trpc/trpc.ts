@@ -1,13 +1,7 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import type { Context } from "./context";
-import superjson from "superjson";
 
-export const t = initTRPC<{ ctx: Context }>()({
-  transformer: superjson,
-  errorFormatter({ shape }) {
-    return shape;
-  },
-});
+export const t = initTRPC.context<Context>().create()
 
 export const authedProcedure = t.procedure.use(({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {

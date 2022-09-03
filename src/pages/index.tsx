@@ -9,7 +9,7 @@ import { trpc } from "src/utils/trpc";
 import { getRougeAuthSession } from "src/server/common/get-server-session";
 
 const Home: NextPage = () => {
-  const hello = trpc.proxy.example.hello.useQuery({ text: "from tRPC" });
+  const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
 
   const { data: session } = useSession();
 
