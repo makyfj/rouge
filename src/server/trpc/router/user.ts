@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const userRouter = t.router({
   getUser: t.procedure
-    .input(z.object({ email: z.string().email() }))
+    .input(z.object({ email: z.string() }))
     .query(({ input, ctx }) => {
       return ctx.prisma.user.findUnique({
         where: {
