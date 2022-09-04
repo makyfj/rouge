@@ -12,8 +12,6 @@ const User = () => {
     email: session?.user?.email as string,
   });
 
-  console.log(user);
-
   useEffect(() => {
     if (!session) {
       router.push("/");
@@ -21,11 +19,17 @@ const User = () => {
   }, [router, session]);
 
   return (
-    <Menu
-      name={session?.user?.name as string}
-      image={session?.user?.image as string}
-    >
-      <h1>User</h1>
+    <Menu name={user?.name as string} image={user?.image as string}>
+      <h1 className="text-center text-xl">Basic Info</h1>
+      <div className="max-w-lg bg-cyan-500 flex flex-col justify-evenly items-center gap-4 mx-auto rounded py-2">
+        <div className="flex gap-2">
+          <span>Name: </span>
+          <span>{user?.name}</span>
+        </div>
+        <div className="flex justify-center">
+          <button className="button">Delete Account</button>
+        </div>
+      </div>
     </Menu>
   );
 };
