@@ -62,3 +62,31 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Workout {
+  id        String     @id @default(cuid())
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  exercises Exercise[]
+}
+
+model Exercise {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  workoutId String
+  workout   Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  sets      Set[]
+}
+
+model Set {
+  id         String   @id @default(cuid())
+  weight     Int
+  reps       Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+}
