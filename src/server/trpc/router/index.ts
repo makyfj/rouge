@@ -5,6 +5,7 @@ import { authRouter } from "./auth";
 import { userRouter } from "./user";
 import { workoutRouter } from "./workout";
 import { exerciseRouter } from "./exercise";
+import { setRouter } from "./set";
 
 export const appRouter = t.router({
   example: exampleRouter,
@@ -12,6 +13,7 @@ export const appRouter = t.router({
   user: userRouter,
   workout: workoutRouter,
   exercise: exerciseRouter,
+  set: setRouter,
 });
 
 // export type definition of API
