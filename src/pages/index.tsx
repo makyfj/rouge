@@ -5,12 +5,9 @@ import Head from "next/head";
 import { FcGoogle } from "react-icons/fc";
 import { FaDiscord } from "react-icons/fa";
 
-import { trpc } from "src/utils/trpc";
 import { getRougeAuthSession } from "src/server/common/get-server-session";
 
 const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
-
   const { data: session } = useSession();
 
   return (
@@ -41,16 +38,12 @@ const Home: NextPage = () => {
                     </p>
                     <div className="flex gap-4 justify-center">
                       <Link href="/workout">
-                        <a
-                          className="p-4 border border-black rounded text-cyan-50"
-                        >
+                        <a className="p-4 border border-black rounded text-cyan-50">
                           Workout
                         </a>
                       </Link>
                       <Link href="/user">
-                        <a
-                          className="p-4 border border-black rounded text-cyan-50"
-                        >
+                        <a className="p-4 border border-black rounded text-cyan-50">
                           Profile
                         </a>
                       </Link>

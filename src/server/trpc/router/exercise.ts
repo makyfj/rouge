@@ -1,10 +1,10 @@
 import trpc from "@trpc/server";
 import { z } from "zod";
 
-import { t } from "../trpc";
+import { t, authedProcedure } from "../trpc";
 
 export const exerciseRouter = t.router({
-  getExercises: t.procedure.query(({ ctx }) => {
+  getExercises: authedProcedure.query(({ ctx }) => {
     const exercises = ctx.prisma.exercise.findMany();
     if (!exercises) {
       throw new trpc.TRPCError({
@@ -15,7 +15,7 @@ export const exerciseRouter = t.router({
     return exercises;
   }),
 
-  getExerciseById: t.procedure.input(z.string()).query(({ ctx, input }) => {
+  getExerciseById: authedProcedure.input(z.string()).query(({ ctx, input }) => {
     const exercise = ctx.prisma.exercise.findUnique({
       where: {
         id: input,
@@ -31,7 +31,7 @@ export const exerciseRouter = t.router({
     return exercise;
   }),
 
-  createExercise: t.procedure
+  createExercise: authedProcedure
     .input(
       z.object({
         name: z.string(),
@@ -56,7 +56,7 @@ export const exerciseRouter = t.router({
       return newExercise;
     }),
 
-  updateExercise: t.procedure
+  updateExercise: authedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -83,20 +83,22 @@ export const exerciseRouter = t.router({
       return updatedExercise;
     }),
 
-  deleteExercise: t.procedure.input(z.string()).mutation(({ ctx, input }) => {
-    const deletedExercise = ctx.prisma.exercise.delete({
-      where: {
-        id: input,
-      },
-    });
-
-    if (!deletedExercise) {
-      throw new trpc.TRPCError({
-        code: "NOT_FOUND",
-        message: "No exercise found",
+  deleteExercise: authedProcedure
+    .input(z.string())
+    .mutation(({ ctx, input }) => {
+      const deletedExercise = ctx.prisma.exercise.delete({
+        where: {
+          id: input,
+        },
       });
-    }
 
-    return deletedExercise;
-  }),
+      if (!deletedExercise) {
+        throw new trpc.TRPCError({
+          code: "NOT_FOUND",
+          message: "No exercise found",
+        });
+      }
+
+      return deletedExercise;
+    }),
 });

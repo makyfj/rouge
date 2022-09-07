@@ -1,10 +1,10 @@
 import trpc from "@trpc/server";
 import { z } from "zod";
 
-import { t } from "../trpc";
+import { authedProcedure, t } from "../trpc";
 
 export const workoutRouter = t.router({
-  getWorkouts: t.procedure.query(({ ctx }) => {
+  getWorkouts: authedProcedure.query(({ ctx }) => {
     const workouts = ctx.prisma.workout.findMany();
     if (!workouts) {
       throw new trpc.TRPCError({
@@ -14,7 +14,7 @@ export const workoutRouter = t.router({
     }
     return workouts;
   }),
-  getWorkoutById: t.procedure.input(z.string()).query(({ ctx, input }) => {
+  getWorkoutById: authedProcedure.input(z.string()).query(({ ctx, input }) => {
     const workout = ctx.prisma.workout.findUnique({
       where: {
         id: input,
@@ -30,7 +30,7 @@ export const workoutRouter = t.router({
     return workout;
   }),
 
-  createWorkout: t.procedure
+  createWorkout: authedProcedure
     .input(
       z.object({
         name: z.string(),
@@ -53,7 +53,7 @@ export const workoutRouter = t.router({
       return newWorkout;
     }),
 
-  updateWorkout: t.procedure
+  updateWorkout: authedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -80,7 +80,7 @@ export const workoutRouter = t.router({
       return workoutUpdated;
     }),
 
-  deleteWorkout: t.procedure
+  deleteWorkout: authedProcedure
     .input(
       z.object({
         id: z.string(),

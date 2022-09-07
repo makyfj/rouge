@@ -1,10 +1,10 @@
 import trpc from "@trpc/server";
 import { z } from "zod";
 
-import { t } from "../trpc";
+import { t, authedProcedure } from "../trpc";
 
 export const setRouter = t.router({
-  getSets: t.procedure.query(({ ctx }) => {
+  getSets: authedProcedure.query(({ ctx }) => {
     const sets = ctx.prisma.set.findMany();
     if (!sets) {
       throw new trpc.TRPCError({
@@ -15,7 +15,7 @@ export const setRouter = t.router({
     return sets;
   }),
 
-  getSetById: t.procedure.input(z.string()).query(({ ctx, input }) => {
+  getSetById: authedProcedure.input(z.string()).query(({ ctx, input }) => {
     const set = ctx.prisma.set.findUnique({
       where: {
         id: input,
@@ -31,7 +31,7 @@ export const setRouter = t.router({
     return set;
   }),
 
-  createSets: t.procedure
+  createSets: authedProcedure
     .input(
       z.array(
         z.object({
@@ -62,7 +62,7 @@ export const setRouter = t.router({
       return newSets;
     }),
 
-  updateSets: t.procedure
+  updateSets: authedProcedure
     .input(
       z.array(
         z.object({
@@ -95,7 +95,7 @@ export const setRouter = t.router({
       return updatedSets;
     }),
 
-  deleteSets: t.procedure
+  deleteSets: authedProcedure
     .input(z.array(z.string()))
     .mutation(({ ctx, input }) => {
       const deletedSets = ctx.prisma.set.deleteMany({

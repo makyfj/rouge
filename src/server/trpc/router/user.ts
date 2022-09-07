@@ -1,8 +1,8 @@
-import { t } from "../trpc";
+import { authedProcedure, t } from "../trpc";
 import { z } from "zod";
 
 export const userRouter = t.router({
-  getUser: t.procedure
+  getUser: authedProcedure
     .input(z.object({ email: z.string() }))
     .query(({ input, ctx }) => {
       return ctx.prisma.user.findUnique({
