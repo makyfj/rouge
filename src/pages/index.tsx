@@ -67,7 +67,7 @@ const Home: NextPage = () => {
                       <button
                         onClick={() =>
                           signIn("google", {
-                            callbackUrl: `/user`,
+                            callbackUrl: `/`,
                           })
                         }
                         className="p-4 border border-black rounded"
@@ -77,7 +77,7 @@ const Home: NextPage = () => {
                       <button
                         onClick={() =>
                           signIn("discord", {
-                            callbackUrl: `/user`,
+                            callbackUrl: `/`,
                           })
                         }
                         className="p-4 border border-black rounded"
