@@ -19,10 +19,10 @@ const User = () => {
   }, [router, session]);
 
   return (
-    <Menu name={user?.name as string} image={user?.image as string}>
-      <h1 className="text-center text-xl">Basic Info</h1>
+    <Menu>
+      <h1 className="pages-title">Basic Info</h1>
       <div className="max-w-lg bg-cyan-500 flex flex-col justify-evenly items-center gap-4 mx-auto rounded py-2">
-        <div className="flex gap-2">
+        <div className="flex gap-2 text-lg">
           <span>Name: </span>
           <span>{user?.name}</span>
         </div>
