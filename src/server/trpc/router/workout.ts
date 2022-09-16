@@ -29,7 +29,6 @@ export const workoutRouter = t.router({
     }
     return workout;
   }),
-
   createWorkout: authedProcedure
     .input(
       z.object({

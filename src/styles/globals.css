@@ -16,6 +16,6 @@
   }
   
   .pages-title {
-    @apply text-center text-2xl md:text-3xl font-bold my-2;
+    @apply text-center text-xl md:text-2xl font-bold my-2;
   }
 }
