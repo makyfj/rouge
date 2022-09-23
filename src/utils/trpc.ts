@@ -2,6 +2,7 @@
 import {setupTRPC} from '@trpc/next'
 import type {AppRouter} from '../server/trpc/router'
 import superjson from 'superjson'
+import {devtoolsLink} from 'trpc-client-devtools-link'
 
 const getBaseUrl = () => {
 	if (typeof window !== 'undefined') return '' // browser should use relative url
@@ -13,6 +14,13 @@ const getBaseUrl = () => {
 export const trpc = setupTRPC<AppRouter>({
 	config() {
 		return {
+			links: [
+				devtoolsLink({
+					// `enabled` is true by default
+					// If you want to use the devtools extension just for development, do the following
+					enabled: process.env.NODE_ENV === 'development',
+				}),
+			],
 			url: `${getBaseUrl()}/api/trpc`,
 			transformer: superjson,
 		}
